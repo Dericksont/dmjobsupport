@@ -1,0 +1,151 @@
+﻿
+@using PowerGridMVC.Models
+@model PowerGridMVC.Models.AccountModel
+           @{
+               Layout = "~/Views/Shared/_Layout.cshtml";
+           }
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Load</title>
+</head>
+    <body>
+        <div class="timeSpanFrame">
+            <div class="timeSpanLeft">
+                <h2>Time Period</h2>
+            </div>
+            <div class="timeSpanRight">
+                <div class="timePeriod">
+                    <ul>
+                        <li class="selected">Jun FY14</li>
+                        <li>Jul FY15</li>
+                        <li>Aug FY15</li>
+                        <li>Sep FY15</li>
+                        <li>Oct FY15</li>
+                        <li>Nov FY15</li>
+                        <li>Dec FY15</li>
+                        <li>Jan FY15</li>
+                        <li>Feb FY15</li>
+                        <li>Mar FY15</li>
+                        <li>Apr FY15</li>
+                        <li>May FY15</li>
+                        <li>Jun FY15</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div id="result">
+            <div class="breadCrumbs">
+                <span>
+                    @Html.ActionLink("DistiGrid", "Index", "DistiGrid")&nbsp;&gt;&nbsp;&gt;20% Total Market Shipment &amp; &gt;20% Total Market Pro Shipment
+                </span>&nbsp;
+            </div>
+            <div class="frame">
+                <div class="frameLeft">
+                    <h2>Options</h2>
+                    <div class="filterGroupSection">
+                        <div class="filterGroup">
+                            <div>
+                                @using (Html.BeginForm())
+                                {
+                                    <label> Distributor </label>
+                                    @Html.DropDownListFor(x => x.Distributor, new[]
+                                    {
+                                        new SelectListItem() {Text = "Option 1", Value = "one"},
+                                        new SelectListItem() {Text = "Option 2", Value = "two"},
+                                        new SelectListItem() {Text = "Option 3", Value = "three"}
+                                    })
+                                
+
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+        
+        
+                @*@using PowerGridMVC.Models        @model List<AccountModel>
+        <table>
+            @foreach (AccountModel accountuser in Model)
+            {
+                <tr>
+                    <td>@accountuser.AccountId</td>
+                    <td>@accountuser.PartnerName</td>
+                    <td>@accountuser.Indicator1</td>
+                    <td>@accountuser.Indicator2</td>
+                    <td>@accountuser.Indicator3</td>
+                    <td>@accountuser.Indicator4</td>
+                    <td>@accountuser.Indicator5</td>
+                    <td>@accountuser.Indicator6</td>
+                    <td>@accountuser.Indicator7</td>
+                    <td>@accountuser.Indicator8</td>
+                </tr>
+            }
+        </table>*@
+                             
+                <div class="frameRight">
+                    @(Html.Kendo().Grid<PowerGridMVC.Models.AccountModel>
+                          ()
+                          .Name("partnerTable")
+                          .Columns(columns => {
+                                                  columns.Bound(p => p.AccountId).Width(100);
+                              //Column Grid leading to another partial view of each Distributor account
+                                                 columns.Bound(p=>p.PartnerName).ClientTemplate(
+                                                 "<a href='" + Url.Action("Details", "DistiGrid") +"'" +">#=PartnerName#</a>");
+                                                  columns.Bound(p => p.Indicator1).Width(80);
+                                                  columns.Bound(p => p.Indicator2).Width(80);
+                                                  columns.Bound(p => p.Indicator3).Width(80);
+                                                  columns.Bound(p => p.Indicator4).Width(80);
+                                                  columns.Bound(p => p.Indicator5).Width(80);
+                                                  columns.Bound(p => p.Indicator6).Width(80);
+                                                  columns.Bound(p => p.Indicator7).Width(80);
+                                                  columns.Bound(p => p.Indicator8).Width(80); 
+                                                  columns.Command(command => command.Destroy()).Width(100);
+                          })
+                          .ToolBar(toolbar => {
+                                                  toolbar.Create();
+                                                  toolbar.Save();
+                          })
+                          .Editable(editable => editable.Mode(GridEditMode.InCell))
+                          .Pageable()
+                          .Navigatable()
+                          .Sortable()
+                          .Scrollable()
+                          .DataSource(dataSource => dataSource
+                              .Ajax()
+                              .Batch(true)
+                              .PageSize(20)
+                              .ServerOperation(false)
+                              .Events(events => events.Error("error_handler"))
+                              .Model(model => model.Id(p => p.AccountId))
+                              .Create("Editing_Create", "DistiGrid")
+                              .Read("Editing_Read", "DistiGrid")
+                              .Update("Editing_Update", "DistiGrid")
+                              .Destroy("Editing_Destroy", "DistiGrid")
+                          )
+                          )
+                    <script type="text/javascript">
+                        function error_handler(e) {
+                            if (e.errors) {
+                                var message = "Errors:\n";
+                                $.each(e.errors, function (key, value) {
+                                    if ('errors' in value) {
+                                        $.each(value.errors, function () {
+                                            message += this + "\n";
+                                        });
+                                    }
+                                });
+                                alert(message);
+                            }
+                        }
+                    </script>
+
+                   
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

@@ -1,0 +1,48 @@
+﻿
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - PowerGrid MVC</title>
+    @*<style type="text/css">.content-w { }</style>*@
+    @Scripts.Render("~/bundles/jquery")
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/scripts")
+    @Scripts.Render("~/bundles/kendo")
+    @Styles.Render("~/Content/kendo/css")
+
+</head>
+<body>
+    <div id="pageWrapper">
+        <div id="pageContent">
+            <div id="header">
+                <div id="nav">
+                    <ul>
+                        <li>@Html.ActionLink("DistiGrid", "Index", "DistiGrid") </li>
+                        <li>@Html.ActionLink("ResellerGrid", "Index", "ResellerGrid")</li>
+                    </ul>
+                </div>
+            </div>
+    <div id="content">
+       
+
+                @RenderBody()
+            </div>
+            <footer>
+                <div id="footer">
+                    <div id="msLogo">
+                        <img src="~/images/logo_microsoft.png" />
+                    </div>
+                    <div id="link">
+                        <p>
+                            <a href="http://www.microsoft.com/privacystatement/en-us/dpn/default.aspx"><b> Microsoft Data Protection Notice</b></a>
+                        </p>
+                    </div>
+                </div>
+            </footer>
+        </div>
+    </div>
+        
+</body>
+</html>

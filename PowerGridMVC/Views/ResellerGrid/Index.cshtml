@@ -1,0 +1,107 @@
+﻿@model PowerGridMVC.Models.ResellerGridModel
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Index</title>
+</head>
+<body>
+    <div class="timeSpanFrame">
+        <div class="timeSpanLeft">
+            <h2>Time Period</h2>
+        </div>
+        <div class="timeSpanRight">
+            <div class="timePeriod">
+                <ul>
+                    <li class="selected" @Html.ActionLink("Jun FY14", "Index", "DistiGrid")></li>
+                    <li>Jul FY15</li>
+                    <li>Aug FY15</li>
+                    <li>Sep FY15</li>
+                    <li>Oct FY15</li>
+                    <li>Nov FY15</li>
+                    <li>Dec FY15</li>
+                    <li>Jan FY15</li>
+                    <li>Feb FY15</li>
+                    <li>Mar FY15</li>
+                    <li>Apr FY15</li>
+                    <li>May FY15</li>
+                    <li>Jun FY15</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="breadCrumbs">&nbsp;</div>
+    <div class="frame">
+        <div class="frameLeft">
+            <h2>Filters</h2>
+            <div class="filterGroupSection">
+                <div class="filterGroup">
+                    <div>
+
+                        <label> TimeZone </label>
+                        @(Html.Kendo().DropDownList()
+                                  .Name("tzName")
+                                  .HtmlAttributes(new { style = "width:250px" })
+                                  .OptionLabel("Select TimeZone...")
+                                  .DataTextField("Geo")
+                                                  .DataValueField("Geo")
+                                  .DataSource(source => source.Read(read => read.Action("GetCascadeCategories", "ResellerGrid")))
+                        )
+
+
+                        <label> Area </label>
+                        @(Html.Kendo().DropDownList()
+                                  .Name("areaName")
+                                  .HtmlAttributes(new { style = "width:250px" })
+                                  .OptionLabel("Select Area...")
+                                  .DataTextField("Area")
+                                                  .DataValueField("Area")
+                                  .DataSource(source => source.Read(read => read.Action("GetAreaByGeo", "ResellerGrid")
+                                      .Data("filterArea"))
+                                      .ServerFiltering(true))
+                                  .Enable(false)
+                                  .AutoBind(false)
+                                  .CascadeFrom("tzName")
+                        )
+                        <script>
+                            function filterArea() {
+                                return {
+                                    Name: $("#tzName").val()
+                                };
+                            }
+                        </script>
+
+                        <label> Subsidiary </label>
+                        @(Html.Kendo().DropDownList()
+                                  .Name("subsidiaryName")
+                                  .HtmlAttributes(new { style = "width:250px" })
+                                  .OptionLabel("Select Subsdiary...")
+                                  .DataTextField("Subsidiary")
+                                                  .DataValueField("Subsidiary")
+                                  .DataSource(source => source.Read(read => read.Action("GetSubsdiaryByArea", "ResellerGrid")
+                                      .Data("filterSubsidiary"))
+                                      .ServerFiltering(true))
+                                  .Enable(false)
+                                  .AutoBind(false)
+                                  .CascadeFrom("areaName")
+                        )
+                        <script>
+                            function filterSubsidiary() {
+                                return {
+                                    areaName: $("#areaName").val()
+                                };
+                            }
+                        </script>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+
+</body>
+</html>
